@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>跑马灯页面</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <input type="button" value="start" @click="go">
+  <input type="button" value="stop" @click="stop">
+  <h4>{{msg}}</h4>
+</div>
+
+<script>
+    let vm = new Vue(
+        {
+            el: "#app",
+            data: {
+                msg: 'This is first vue!',
+                interval_id: null
+            },
+            methods: {
+                go() {
+                    if (this.interval_id != null) {
+                        return 0
+                    }
+                    this.interval_id = setInterval(
+                        () => {
+                            let str_header = this.msg.substring(0, 1);
+                            let str_tail = this.msg.substring(1);
+                            this.msg = str_tail + str_header;
+                        }, 40
+                    )
+                },
+                stop() {
+                    clearInterval(this.interval_id);
+                    this.interval_id = null
+                }
+            }
+        }
+    )
+</script>
+</body>
+</html>
