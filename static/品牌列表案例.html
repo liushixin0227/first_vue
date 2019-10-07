@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>站点管理</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+  <script src="../lib/vue.js"></script>
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -22,13 +21,13 @@
       </label>
       <label>
         Name:
-        <input type="text" class="form-control" v-model="name">
+        <input type="text" class="form-control" v-model="name" @click.keyup.entry="add">
       </label>
 
       <input type="button" value="新增" class="btn btn-primary" @click="add">
       <label>
         搜索关键字:
-        <input type="text" class="form-control" v-model="keywords" keyup.enter="add">
+        <input type="text" class="form-control" v-model="keywords" v-focus>
       </label>
     </div>
   </div>
@@ -42,7 +41,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(item,index) in search(keywords)" :key="item.id">
+    <tr v-for="(item,index) in search_keywords(keywords)" :key="item.id">
       <td>{{item.id}}</td>
       <td>{{item.name}}</td>
       <td>{{item.ctime | DateFormat('yyyy-mm-dd')}}</td>
@@ -58,6 +57,7 @@
 <script type="module">
 
   //自定义全局按键修饰符
+
   Vue.config.keyCodes.f3 = 113
   Vue.directive('focus', {
     bind: function () {
@@ -107,7 +107,7 @@
           this.list.push(info)
           this.id = this.name = ''
         },
-        search (keywords) {
+        search_keywords (keywords) {
           return this.list.filter(item => {
             if (item.name.includes(keywords)) {
               return item
